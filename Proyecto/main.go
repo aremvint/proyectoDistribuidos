@@ -11,9 +11,10 @@ import(
 
 type Evento struct{
   Id int
+  Nombre string
   Fecha string
   Lugar string
-  Nombre string
+  Venue int
   IdAdministrador *Administrador
 }
 
@@ -34,7 +35,7 @@ type Administrador struct{
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := "root"
-    dbPass := "1234"
+    dbPass := "password"
     dbName := "ventas"
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
     if err != nil {
@@ -54,9 +55,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
     eve := Evento{}
     res := []Evento{}
     for selDB.Next() {
-        var id int
+        var id, venue, administrador int
         var fecha, lugar, nombre string
-        err = selDB.Scan(&id, &fecha, &lugar, &nombre)
+        err = selDB.Scan(&id, &nombre, &fecha, &lugar, &venue, &administrador)
         if err != nil {
             panic(err.Error())
         }
@@ -79,9 +80,9 @@ func Show(w http.ResponseWriter, r *http.Request) {
     }
     eve := Evento{}
     for selDB.Next() {
-        var id int
+        var id, venue, administrador int
         var fecha, lugar, nombre string
-        err = selDB.Scan(&id, &fecha, &lugar, &nombre)
+        err = selDB.Scan(&id, &nombre, &fecha, &lugar, &venue, &administrador)
         if err != nil {
             panic(err.Error())
         }
