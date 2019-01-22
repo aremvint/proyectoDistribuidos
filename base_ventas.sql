@@ -19,7 +19,7 @@ USE `ventas` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`Usuario` (
   `idUsuario` INT NOT NULL AUTO_INCREMENT,
-  `cedula_usuario` INT NOT NULL,
+  `cedula_usuario` VARCHAR(45) NOT NULL,
   `nombres` VARCHAR(100) NULL,
   `apellidos` VARCHAR(100) NULL,
   `telefono` VARCHAR(45) NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `ventas`.`Administrador` (
   `cedula_administrador` INT NOT NULL,
   `nombres` VARCHAR(100) NULL,
   `apellidos` VARCHAR(100) NULL,
-  `edad` VARCHAR(45) NULL,
+  `edad` INT NULL,
   `correo` VARCHAR(45) NULL,
   `usuario` VARCHAR(45) NOT NULL,
   `contraseña` VARCHAR(45) NOT NULL,
@@ -110,7 +110,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `ventas`.`boleto` (
   `idboleto` INT NOT NULL,
   `precio` FLOAT NULL,
-  `comprado` TINYINT NOT NULL,
+  `comprado` TINYINT(1) NOT NULL,
   `asiento_idasiento` INT NOT NULL,
   `asiento_categoria_idcategoria` INT NOT NULL,
   `asiento_categoria_Venue_idVenue` INT NOT NULL,
