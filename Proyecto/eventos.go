@@ -15,7 +15,7 @@ type Evento struct{
   Fecha string
   Lugar string
   Venue int
-  IdAdministrador *Administrador
+  Administrador int
 }
 
 type Administrador struct{
@@ -35,7 +35,7 @@ type Administrador struct{
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
     dbUser := "root"
-    dbPass := "password"
+    dbPass := "1234"
     dbName := "ventas"
     db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@/"+dbName)
     if err != nil {
@@ -44,7 +44,7 @@ func dbConn() (db *sql.DB) {
     return db
 }
 
-var tmpl = template.Must(template.ParseGlob("form/*"))
+var tmpl = template.Must(template.ParseGlob("form-eventos/*"))
 
 func Index(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
@@ -57,14 +57,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id, venue, administrador int
         var fecha, lugar, nombre string
-        err = selDB.Scan(&id, &nombre, &fecha, &lugar, &venue, &administrador)
+        err = selDB.Scan(&id, &nombre, &lugar, &fecha, &venue, &administrador)
         if err != nil {
             panic(err.Error())
         }
         eve.Id = id
-        eve.Fecha = fecha
-        eve.Lugar = lugar
         eve.Nombre = nombre
+        eve.Lugar = lugar
+        eve.Fecha = fecha
         res = append(res, eve)
     }
     tmpl.ExecuteTemplate(w, "Index", res)
@@ -82,14 +82,14 @@ func Show(w http.ResponseWriter, r *http.Request) {
     for selDB.Next() {
         var id, venue, administrador int
         var fecha, lugar, nombre string
-        err = selDB.Scan(&id, &nombre, &fecha, &lugar, &venue, &administrador)
+        err = selDB.Scan(&id, &nombre, &lugar, &fecha, &venue, &administrador)
         if err != nil {
             panic(err.Error())
         }
         eve.Id = id
-        eve.Fecha = fecha
-        eve.Lugar = lugar
         eve.Nombre = nombre
+        eve.Lugar = lugar
+        eve.Fecha = fecha
     }
     tmpl.ExecuteTemplate(w, "Show", eve)
     defer db.Close()
@@ -108,16 +108,16 @@ func Edit(w http.ResponseWriter, r *http.Request) {
     }
     eve := Evento{}
     for selDB.Next() {
-        var id, venue, administrador int
-        var fecha, lugar, nombre string
-        err = selDB.Scan(&id, &nombre, &fecha, &lugar, &venue, &administrador)
+      var id, venue, administrador int
+      var fecha, lugar, nombre string
+      err = selDB.Scan(&id, &nombre, &lugar, &fecha, &venue, &administrador)
         if err != nil {
             panic(err.Error())
         }
         eve.Id = id
-        eve.Fecha = fecha
-        eve.Lugar = lugar
         eve.Nombre = nombre
+        eve.Lugar = lugar
+        eve.Fecha = fecha
     }
     tmpl.ExecuteTemplate(w, "Edit", eve)
     defer db.Close()
@@ -126,16 +126,15 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 func Insert(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     if r.Method == "POST" {
-        id := r.FormValue("id")
-        fecha := r.FormValue("fecha")
-        lugar := r.FormValue("lugar")
         nombre := r.FormValue("nombre")
-        insForm, err := db.Prepare("INSERT INTO Evento(idevento, fecha_evento, lugar_evento, nombre_evento) VALUES(?,?,?,?)")
+        lugar := r.FormValue("lugar")
+        fecha := r.FormValue("fecha")
+        insForm, err := db.Prepare("INSERT INTO Evento(nombre_evento, lugar_evento, fecha_evento, Venue_idVenue, Administrador_idAdministrador ) VALUES(?,?,?,100,10)")
         if err != nil {
             panic(err.Error())
         }
-        insForm.Exec(id, fecha, lugar, nombre)
-        log.Println("INSERT: Nombre: " + nombre + " | Id: " + id)
+        insForm.Exec(nombre, lugar, fecha)
+        log.Println("INSERT: Nombre: " + nombre + " | lugar: " + lugar)
     }
     defer db.Close()
     http.Redirect(w, r, "/", 301)
@@ -144,15 +143,15 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 func Update(w http.ResponseWriter, r *http.Request) {
     db := dbConn()
     if r.Method == "POST" {
-        fecha := r.FormValue("fecha")
-        lugar := r.FormValue("lugar")
-        nombre := r.FormValue("nombre")
         id := r.FormValue("uid")
-        insForm, err := db.Prepare("UPDATE Evento SET fecha_evento=?, lugar_evento=?, nombre_evento=? WHERE idevento=?")
+        nombre := r.FormValue("nombre")
+        lugar := r.FormValue("lugar")
+        fecha := r.FormValue("fecha")
+        insForm, err := db.Prepare("UPDATE Evento SET nombre_evento=?, lugar_evento=?, fecha_evento=?  WHERE idevento=?")
         if err != nil {
             panic(err.Error())
         }
-        insForm.Exec(fecha, lugar, nombre, id)
+        insForm.Exec(id, nombre, lugar, fecha)
         log.Println("UPDATE: Nombre: " + nombre + " | Id: " + id)
     }
     defer db.Close()
@@ -179,7 +178,7 @@ func main() {
     http.HandleFunc("/new", New)
     http.HandleFunc("/edit", Edit)
     http.HandleFunc("/insert", Insert)
-    http.HandleFunc("/update", Insert)
+    http.HandleFunc("/update", Update)
     http.HandleFunc("/delete", Delete)
     http.ListenAndServe(":8080", nil)
 }

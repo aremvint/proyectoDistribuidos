@@ -1,0 +1,7 @@
+{{ define "Mostrar" }}
+  {{ template "Header" }}
+    {{ template "Menu"  }}
+      <p>Id: {{ .Id }}</p>
+      <p>Precio: {{ .Precio }}</p><br /> <a href="/comprar?id={{ .Id }}">Comprar</a></p>
+  {{ template "Footer" }}
+{{ end }}
