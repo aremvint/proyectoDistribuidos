@@ -1,0 +1,29 @@
+{{ define "Index" }}
+  {{ template "Header" }}
+    {{ template "Menu"  }}
+    <h2> Eventos </h2>
+    <a href="/new">Crear Evento</a>
+    <table border="1">
+      <thead>
+      <tr>
+        <td>ID</td>
+        <td>Nombre</td>
+        <td>Fecha</td>
+        <td>Lugar</td>
+        <td></td>
+      </tr>
+       </thead>
+       <tbody>
+    {{ range . }}
+      <tr>
+        <td>{{ .Id }}</td>
+        <td> {{ .Nombre }} </td>
+        <td>{{ .Lugar }} </td>
+        <td>{{ .Fecha }} </td>
+        <td><a href="/show?id={{ .Id }}">Detalles</a></td>
+      </tr>
+    {{ end }}
+       </tbody>
+    </table>
+  {{ template "Footer" }}
+{{ end }}

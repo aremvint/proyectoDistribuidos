@@ -1,0 +1,32 @@
+{{ define "Ticket" }}
+  {{ template "Header" }}
+    {{ template "Menu"  }}
+    <h2> Boletos </h2>
+    <table border="1">
+      <thead>
+      <tr>
+        <td>ID</td>
+        <td>Precio</td>
+        <td>Comprado</td>
+        <td>Asiento</td>
+        <td>Lugar</td>
+        <td>Categoria</td>
+        <td></td>
+      </tr>
+       </thead>
+       <tbody>
+    {{ range . }}
+      <tr>
+        <td>{{ .IdBoleto }}</td>
+        <td> {{ .Precio }} </td>
+        <td> {{ .Comprado }} </td>
+        <td>{{ .Asiento }} </td>
+        <td>{{ .Venue }} </td>
+        <td>{{ .Categoria }} </td>
+        <td><a href="/mostrar?id={{ .IdBoleto }}">Comprar</a><td>
+      </tr>
+    {{ end }}
+       </tbody>
+    </table>
+  {{ template "Footer" }}
+{{ end }}
