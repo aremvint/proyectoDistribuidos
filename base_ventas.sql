@@ -54,7 +54,7 @@ ENGINE = InnoDB;
 -- Table `ventas`.`Venue`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`Venue` (
-  `idVenue` INT NOT NULL,
+  `idVenue` INT NOT NULL AUTO_INCREMENT,
   `tipo_venue` VARCHAR(45) NULL,
   `descripcion` VARCHAR(45) NULL,
   `Administrador_idAdministrador` INT NOT NULL,
@@ -72,7 +72,7 @@ ENGINE = InnoDB;
 -- Table `ventas`.`categoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`categoria` (
-  `idcategoria` INT NOT NULL,
+  `idcategoria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `cantidad_asientos` INT NULL,
   `Venue_idVenue` INT NOT NULL,
@@ -90,7 +90,7 @@ ENGINE = InnoDB;
 -- Table `ventas`.`asiento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`asiento` (
-  `idasiento` INT NOT NULL,
+  `idasiento` INT NOT NULL AUTO_INCREMENT,
   `numero_asiento` VARCHAR(45) NOT NULL,
   `categoria_idcategoria` INT NOT NULL,
   `categoria_Venue_idVenue` INT NOT NULL,
@@ -108,7 +108,7 @@ ENGINE = InnoDB;
 -- Table `ventas`.`boleto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`boleto` (
-  `idboleto` INT NOT NULL,
+  `idboleto` INT NOT NULL AUTO_INCREMENT,
   `precio` FLOAT NULL,
   `comprado` TINYINT(1) NOT NULL,
   `asiento_idasiento` INT NOT NULL,
@@ -128,7 +128,7 @@ ENGINE = InnoDB;
 -- Table `ventas`.`Reporte`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`Reporte` (
-  `idReporte` INT NOT NULL,
+  `idReporte` INT NOT NULL AUTO_INCREMENT,
   `titulo` VARCHAR(45) NULL,
   `fecha` DATETIME NULL,
   `tipo` VARCHAR(45) NULL,
@@ -177,7 +177,7 @@ ENGINE = InnoDB;
 -- Table `ventas`.`evento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ventas`.`evento` (
-  `idevento` INT NOT NULL,
+  `idevento` INT NOT NULL AUTO_INCREMENT,
   `nombre_evento` VARCHAR(45) NULL,
   `lugar_evento` VARCHAR(45) NULL,
   `fecha_evento` DATETIME NULL,
